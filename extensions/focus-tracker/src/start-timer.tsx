@@ -146,7 +146,7 @@ export default function StartTimer() {
       id: "long-break",
       title: "Long Break",
       subtitle: formatDuration(config.longBreakDuration),
-      icon: { source: Icon.Palm, tintColor: Color.Blue },
+      icon: { source: Icon.Tree, tintColor: Color.Blue },
       type: "long-break",
     },
   ];

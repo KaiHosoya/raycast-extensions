@@ -239,7 +239,7 @@ export default function Dashboard() {
       {/* ─── Daily Summary ─────────────────────────────────────────────── */}
       <List.Section title="Today's Summary">
         <List.Item
-          icon={{ source: Icon.Target, tintColor: goalPercent >= 100 ? Color.Green : Color.Orange }}
+          icon={{ source: Icon.BullsEye, tintColor: goalPercent >= 100 ? Color.Green : Color.Orange }}
           title="Daily Goal"
           subtitle={`${daily.sessionsCompleted} / ${dailyGoal} sessions`}
           accessories={[
