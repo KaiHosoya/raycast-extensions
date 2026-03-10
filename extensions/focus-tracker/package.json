@@ -1,0 +1,92 @@
+{
+  "name": "focus-tracker",
+  "title": "Focus Tracker",
+  "description": "Pomodoro timer with daily work dashboard - track your focus sessions and monitor productivity like Rize",
+  "icon": "extension_icon.png",
+  "author": "chaichai",
+  "categories": [
+    "Productivity"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "start-timer",
+      "title": "Start Timer",
+      "subtitle": "Focus Tracker",
+      "description": "Choose a session type and start a timer",
+      "mode": "view"
+    },
+    {
+      "name": "dashboard",
+      "title": "Today's Dashboard",
+      "subtitle": "Focus Tracker",
+      "description": "View today's work summary and focus stats",
+      "mode": "view"
+    },
+    {
+      "name": "menu-bar-timer",
+      "title": "Pomodoro Timer",
+      "subtitle": "Focus Tracker",
+      "description": "Shows current timer in the menu bar",
+      "mode": "menu-bar",
+      "interval": "10s"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "focusDuration",
+      "title": "Focus Duration (min)",
+      "description": "Duration of a focus session in minutes",
+      "type": "textfield",
+      "default": "25",
+      "required": false
+    },
+    {
+      "name": "shortBreakDuration",
+      "title": "Short Break (min)",
+      "description": "Duration of a short break in minutes",
+      "type": "textfield",
+      "default": "5",
+      "required": false
+    },
+    {
+      "name": "longBreakDuration",
+      "title": "Long Break (min)",
+      "description": "Duration of a long break after 4 sessions",
+      "type": "textfield",
+      "default": "15",
+      "required": false
+    },
+    {
+      "name": "dailyGoal",
+      "title": "Daily Goal (sessions)",
+      "description": "Number of pomodoro sessions you want to complete daily",
+      "type": "textfield",
+      "default": "8",
+      "required": false
+    }
+  ],
+  "platforms": [
+    "macOS"
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.104.8",
+    "@raycast/utils": "^1.17.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.1.1",
+    "@types/node": "22.5.2",
+    "@types/react": "18.3.5",
+    "eslint": "^9.39.4",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "prepublishOnly": "echo \"Error: no publish\" && exit 1",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}
