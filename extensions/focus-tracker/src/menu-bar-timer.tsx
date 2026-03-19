@@ -53,6 +53,7 @@ export default function MenuBarTimer() {
             elapsed: state.duration,
             type: state.type,
             completed: true,
+            label: state.label,
           };
           await addSession(session);
 
@@ -68,6 +69,13 @@ export default function MenuBarTimer() {
           const emoji = state.type === "focus" ? "✅" : "☕";
           const label = state.type === "focus" ? "Focus complete!" : "Break over!";
           await showHUD(`${emoji} ${label}`);
+
+          // Open Start Timer so the user can pick the next session
+          try {
+            await launchCommand({ name: "start-timer", type: LaunchType.UserInitiated });
+          } catch {
+            // Raycast window may not be focused — user can open manually
+          }
         }
       }
 
@@ -83,11 +91,13 @@ export default function MenuBarTimer() {
   if (timer && timer.isRunning) {
     const remaining = getRemaining(timer);
     const timeStr = formatTime(remaining);
-    const icon = timer.type === "focus" ? "🍅" : "☕";
-    title = `${icon} ${timeStr}`;
-    tooltip = `Focus Tracker - ${timer.type === "focus" ? "Focusing" : "Break"}: ${timeStr} left`;
+    const icon = timer.type === "focus" ? "🍅" : timer.type === "meeting" ? "👥" : "☕";
+    const label = timer.type === "focus" ? "Focusing" : timer.type === "meeting" ? "Meeting" : "Break";
+    const projectSuffix = timer.label ? ` · ${timer.label}` : "";
+    title = `${icon} ${timeStr}${projectSuffix}`;
+    tooltip = `Focus Tracker - ${label}: ${timeStr} left${timer.label ? ` (${timer.label})` : ""}`;
   } else if (timer && !timer.isRunning && getCurrentElapsed(timer) >= timer.duration) {
-    title = timer.type === "focus" ? "✅ Done" : "☕ Done";
+    title = timer.type === "focus" ? "✅ Done" : timer.type === "meeting" ? "👥 Done" : "☕ Done";
     tooltip = "Focus Tracker - Session complete! Start next one.";
   }
 
@@ -98,8 +108,8 @@ export default function MenuBarTimer() {
         {timer && timer.isRunning ? (
           <>
             <MenuBarExtra.Item
-              title={`${timer.type === "focus" ? "Focusing" : "On Break"}: ${formatTime(getRemaining(timer))}`}
-              icon={timer.type === "focus" ? Icon.Clock : Icon.Pause}
+              title={`${timer.type === "focus" ? "Focusing" : timer.type === "meeting" ? "In Meeting" : "On Break"}: ${formatTime(getRemaining(timer))}`}
+              icon={timer.type === "focus" ? Icon.Clock : timer.type === "meeting" ? Icon.TwoPeople : Icon.Pause}
             />
             <MenuBarExtra.Item
               title="Stop Timer"
@@ -115,6 +125,7 @@ export default function MenuBarTimer() {
                     elapsed: Math.min(elapsed, timer.duration),
                     type: timer.type,
                     completed: elapsed >= timer.duration,
+                    label: timer.label,
                   };
                   await addSession(session);
                   await clearTimerState();
@@ -158,6 +169,9 @@ export default function MenuBarTimer() {
       {/* Today's progress */}
       {todayStats && (
         <MenuBarExtra.Section title="Today">
+          {timer && timer.isRunning && timer.label && (
+            <MenuBarExtra.Item title={`Project: ${timer.label}`} icon={Icon.Tag} />
+          )}
           <MenuBarExtra.Item title={`Sessions: ${todayStats.sessions} / ${todayStats.goal}`} icon={Icon.Checkmark} />
           <MenuBarExtra.Item title={`Focus Time: ${formatDuration(todayStats.focusTime)}`} icon={Icon.Clock} />
           <MenuBarExtra.Item

@@ -58,6 +58,14 @@
       "required": false
     },
     {
+      "name": "meetingDuration",
+      "title": "Meeting Duration (min)",
+      "description": "Default duration of a meeting in minutes",
+      "type": "textfield",
+      "default": "30",
+      "required": false
+    },
+    {
       "name": "dailyGoal",
       "title": "Daily Goal (sessions)",
       "description": "Number of pomodoro sessions you want to complete daily",
